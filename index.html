@@ -591,6 +591,8 @@
                 opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             animation: navSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+            flex-wrap: nowrap;
+            white-space: nowrap;
         }
 
         [data-theme="dark"] nav {
@@ -1314,18 +1316,6 @@
                 right: 8px;
             }
 
-            .theme-toggle {
-                top: 24px;
-                right: 156px;
-                width: 44px;
-                height: 44px;
-            }
-
-            .theme-toggle svg {
-                width: 20px;
-                height: 20px;
-            }
-
             h1 {
                 font-size: 48px;
                 max-width: calc(100% - 130px);
@@ -1341,8 +1331,18 @@
             }
 
             nav ul {
-                flex-wrap: wrap;
-                gap: 32px;
+                gap: 4px;
+            }
+
+            nav li a {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            nav {
+                padding: 10px 16px;
+                gap: 6px;
+                bottom: 16px;
             }
 
             .project-card,
@@ -1395,26 +1395,14 @@
             }
 
             .profile-frame {
-                width: 88px;
-                height: 88px;
+                width: 80px;
+                height: 80px;
                 top: 20px;
                 right: 24px;
             }
 
-            .theme-toggle {
-                top: 20px;
-                right: 124px;
-                width: 40px;
-                height: 40px;
-            }
-
-            .theme-toggle svg {
-                width: 18px;
-                height: 18px;
-            }
-
             h1 {
-                font-size: 36px;
+                font-size: 32px;
                 max-width: calc(100% - 100px);
             }
 
@@ -1446,11 +1434,84 @@
             }
 
             nav {
-                padding: 20px 0;
+                padding: 8px 12px;
+                gap: 4px;
+                bottom: 12px;
             }
 
             nav ul {
-                gap: 24px;
+                gap: 2px;
+            }
+
+            nav li a {
+                padding: 6px 8px;
+                font-size: 10px;
+            }
+
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+            }
+
+            .theme-toggle svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .nav-social {
+                width: 30px;
+                height: 30px;
+            }
+
+            .nav-social svg {
+                width: 13px;
+                height: 13px;
+            }
+
+            .nav-divider {
+                height: 20px;
+            }
+
+            .project-preview {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            nav {
+                padding: 6px 8px;
+                bottom: 8px;
+            }
+
+            nav li a {
+                padding: 5px 6px;
+                font-size: 9px;
+            }
+
+            .theme-toggle {
+                width: 32px;
+                height: 32px;
+            }
+
+            .theme-toggle svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .nav-social {
+                width: 28px;
+                height: 28px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .profile-frame {
+                width: 64px;
+                height: 64px;
+                top: 16px;
+                right: 16px;
             }
         }
     </style>
