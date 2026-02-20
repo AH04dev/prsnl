@@ -414,16 +414,11 @@
             animation-delay: 0.7s;
         }
 
-        @keyframes floatTwinkle {
-            0% {
-                transform: translateY(0px) rotate(auto) scale(0.9);
-                opacity: 0.6;
-            }
-
-            100% {
-                transform: translateY(-8px) rotate(auto) scale(1.1);
-                opacity: 1;
-            }
+        /* Re-use drawEraseDraw for Stars */
+        .doodle-star path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawEraseDraw 6s ease-in-out infinite;
         }
 
         /* Waving Hand Emoji */
@@ -519,33 +514,81 @@
             letter-spacing: -0.01em;
         }
 
-        /* Simple About Section */
+        /* About Me Note Card */
         .about-simple {
-            max-width: 680px;
-            margin-top: 48px;
-            padding: 32px;
-            background: var(--surface);
-            border-left: 2px solid var(--accent);
-            box-shadow: var(--shadow-sm);
+            max-width: 600px;
+            margin-top: 64px;
+            padding: 40px;
+            background: #fffdf5;
+            /* Light yellow warm note color */
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transform: rotate(-1deg);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #111;
+        }
+
+        [data-theme="dark"] .about-simple {
+            background: #232320;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3);
+            color: #ececec;
+        }
+
+        /* Tape effect */
+        .about-simple::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(2deg);
+            width: 100px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            z-index: 2;
+        }
+
+        [data-theme="dark"] .about-simple::before {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
         .about-simple:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateX(4px);
+            box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.12);
+            transform: rotate(-0.5deg) translateY(-2px);
+        }
+
+        [data-theme="dark"] .about-simple:hover {
+            box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .about-title {
+            font-family: 'Geist Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .about-simple p {
             font-size: 15px;
             line-height: 1.8;
-            color: var(--text-secondary);
             letter-spacing: -0.01em;
             margin: 0;
+            font-family: 'Geist', sans-serif;
         }
 
         .about-simple p strong {
-            color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         /* Tips/Notes Section */
@@ -1762,6 +1805,7 @@
                     </svg></span> here <span class="wave-emoji">👋</span></h1>
             <p class="tagline">I design and build for the web</p>
             <div class="about-simple" id="about">
+                <div class="about-title">📌 About Me</div>
                 <p><strong>Full-stack web developer & freelancer.</strong>
                     I build web apps that actually slap.
                     Specialized in the React ecosystem, I handle the entire pipeline. From complex backend logic to
@@ -1892,10 +1936,10 @@
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M24 18.588a1.529 1.529 0 0 1-1.895-.72l-3.45-4.771-.5-.667-4.003 5.444a1.466 1.466 0 0 1-1.802.708l5.158-6.92-4.798-6.251a1.595 1.595 0 0 1 1.9.666l3.576 4.83 3.596-4.81a1.435 1.435 0 0 1 1.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 0 0 0 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27 1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.078 4.078 0 0 0 2.582-2.876c.207-.666.548-.78 1.174-.588a5.417 5.417 0 0 1-2.589 3.957 6.272 6.272 0 0 1-7.306-.933 6.575 6.575 0 0 1-1.64-3.858c0-.235-.08-.455-.134-.666A88.33 88.33 0 0 1 0 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278-2.882-.04-4.944 2.094-5.071 5.264z" />
+                                        d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.81.39.024.75.426.87.696l2.067-1.296c-.604-1.127-1.605-1.848-3.048-1.956-1.593-.111-3.097.669-3.525 2.154-.366 1.257.447 2.217 1.344 2.661.996.48 2.052.756 2.22 1.242.111.315.111.666-.084.975-.411.621-1.392.798-2.064.63-.585-.147-1.164-.705-1.422-1.251l-2.091 1.293c.771 1.644 2.126 2.457 3.843 2.517 2.133.069 3.518-.765 3.966-2.148zm-11.454-3.111c0 2.268.033 4.221-.063 4.221-1.203 0-2.052-.765-2.226-1.902l-2.247.969c.567 1.8 2.07 2.919 4.383 2.919 2.508 0 3.321-1.488 3.321-4.221V6H10.58v12.054z" />
                                 </svg>
                             </div>
-                            Vue.js
+                            JavaScript
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
@@ -1933,7 +1977,8 @@
                         <div class="skill-item">
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.146 0h1.258l11.596 23.999H0zm.258 1.67l-8.457 17.195h16.903z" />
+                                    <path
+                                        d="M24 18.588a1.529 1.529 0 01-1.895-.72l-3.45-4.771-.5-.667-4.003 5.444a1.466 1.466 0 01-1.802.708l5.158-6.92-4.798-6.251a1.595 1.595 0 011.9.666l3.576 4.83 3.596-4.81a1.435 1.435 0 011.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 000 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27 1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.078 4.078 0 002.582-2.876c.207-.666.548-.78 1.174-.588a5.417 5.417 0 01-2.589 3.957 6.272 6.272 0 01-7.306-.933 6.575 6.575 0 01-1.64-3.858c0-.235-.08-.455-.134-.666A88.33 88.33 0 010 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278-2.882-.04-4.944 2.094-5.071 5.264z" />
                                 </svg>
                             </div>
                             Express
@@ -1942,7 +1987,7 @@
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352zm-5.146 14.861L10.826 12l7.178-5.448z" />
+                                        d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.14.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23v-2.5l.04-1.24.13-1.08.23-.92.3-.77.38-.63.45-.48.5-.35.58-.23.64-.13.68-.05h3.69l.13-.01h-2.01l-.25-.01-.22-.05-.2-.09-.16-.12-.13-.17-.09-.21-.05-.26-.03-.3v-1.18l.03-.31.06-.26.09-.21.12-.16.16-.12.19-.08.23-.05.26-.01h4.94l1.16.03zM12.98 1.54c-.2.02-.37.06-.52.12-.15.06-.27.14-.37.25-.1.11-.17.24-.22.4-.04.15-.06.33-.06.52s.02.37.06.53c.05.15.12.28.22.39.1.11.22.18.37.24.15.06.32.09.52.09s.37-.03.52-.09c.15-.06.27-.13.37-.24.1-.11.17-.24.22-.39.04-.16.06-.34.06-.53s-.02-.37-.06-.52c-.05-.16-.12-.29-.22-.4-.1-.11-.22-.19-.37-.25-.15-.06-.32-.1-.52-.12zm-3.23 22.28l-.9-.2-.73-.26-.59-.3-.45-.32-.34-.34-.24-.34-.17-.33-.1-.3-.04-.26-.02-.2.01-.13V15.5l.05-.63.14-.55.21-.46.26-.38.3-.31.33-.25.35-.19.35-.14.33-.1.3-.07.26-.04.21-.02h14.86l.69-.05.59-.14.5-.22.41-.27.33-.32.27-.35.2-.36.15-.37.1-.35.07-.32.04-.27.02-.21v-3.06h3.17l.21.03.28.07.32.12.35.18.36.26.36.36.35.46.32.59.28.73.21.88.14 1.05.05 1.23v2.5l-.04 1.24-.13 1.08-.23.92-.3.77-.38.63-.45.48-.5.35-.58.23-.64.13-.68.05h-3.69l-.13.01h2.01l.24.01.22.05.2.09.16.12.13.17.09.21.05.26.03.3v1.18l-.03.31-.06.26-.09.21-.12.16-.16.12-.19.08-.23.05-.26.01h-4.94l-1.16-.03zM11.02 22.46c.2-.02.37-.06.52-.12.15-.06.27-.14.37-.25.1-.11.17-.24.22-.4.04-.15.06-.33.06-.52s-.02-.37-.06-.53c-.05-.15-.12-.28-.22-.39-.1-.11-.22-.18-.37-.24-.15-.06-.32-.09-.52-.09s-.37.03-.52.09c-.15.06-.27.13-.37.24-.1.11-.17.24-.22.39-.04.16-.06.34-.06.53s.02.37.06.52c.05.16.12.29.22.4.1.11.22.19.37.25.15.06.32.1.52.12z" />
                                 </svg>
                             </div>
                             Python
@@ -1951,7 +1996,7 @@
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M11.272 0c-.173 0-.334.025-.483.074-.65.212-1.05.82-1.05 1.623v14.545c0 .074.025.123.074.148a.174.174 0 0 0 .173 0l2.62-1.549c.098-.074.197-.197.197-.32V3.328c0-.099.05-.173.124-.222L19.156.345c.074-.049.148-.074.222-.074.074 0 .148.025.222.074l3.405 1.97c.148.098.246.27.246.443v3.452c0 .173-.098.345-.246.443l-3.405 1.969c-.148.099-.345.099-.493 0l-2.62-1.549a.314.314 0 0 0-.444.123c-.049.074-.074.173-.074.272v2.496c0 .173.098.345.247.443l3.406 1.97c.148.098.345.098.493 0l3.405-1.97c.148-.098.246-.27.246-.443V3.279c0-.173-.098-.345-.246-.443L19.156.075c-.148-.099-.345-.099-.493 0l-7.143 4.13c-.148.098-.246.27-.246.443v14.175c0 .173.098.345.247.443l3.405 1.97c.148.098.345.098.493 0l7.143-4.13c.148-.098.246-.27.246-.443v-3.453c0-.173-.098-.345-.246-.443L19.156 10.9c-.148-.098-.345-.098-.493 0l-3.406 1.969a.314.314 0 0 0-.123.444c.05.074.123.123.222.123h2.62c.123 0 .222-.099.222-.222v-2.496c0-.074.05-.148.124-.222l3.405-1.97c.074-.049.173-.049.247 0l3.405 1.97c.074.074.124.148.124.222v3.453c0 .074-.05.173-.124.222l-3.405 1.969c-.074.05-.173.05-.247 0l-3.405-1.969a.314.314 0 0 0-.444.123c-.05.074-.074.173-.074.272v2.496c0 .173.098.345.247.443l7.143 4.13c.148.098.345.098.493 0l7.143-4.13c.148-.098.246-.27.246-.443V3.279c0-.173-.098-.345-.246-.443L11.765.075A.634.634 0 0 0 11.272 0z" />
+                                        d="M22.028 16.598a.959.959 0 0 1-.572-.258c-.52-.455-1.04-.925-1.558-1.38-.11-.097-.101-.225 0-.325l.805-.718c.287-.25.578-.507.828-.802.167-.197.306-.41.407-.655.123-.292.175-.595.124-.908-.073-.427-.272-.795-.572-1.107-.152-.164-.326-.307-.514-.429-.408-.266-.867-.404-1.346-.484-.525-.09-1.056-.135-1.583-.191a202.972 202.972 0 0 1-10.224-1.34 9.006 9.006 0 0 0-2.348-.112l-1.01.111a.488.488 0 0 1-.295-.03.542.542 0 0 1-.186-.145c-.244-.245-.443-.538-.619-.844-.132-.23-.245-.473-.323-.728a.487.487 0 0 1 .491-.645c1.455.08 2.871-.161 4.254-.572 1.341-.4 2.628-.946 3.864-1.603.204-.108.411-.21.614-.321a11.17 11.17 0 0 0 3.09-2.457c1.196-1.383-.34-2.5-1.879-1.42l-.21.144a17.02 17.02 0 0 1-4.706 2.37A17.915 17.915 0 0 1 4.86 2.45c-.66.082-1.332.122-2.025.132-.236.004-.37.135-.382.355a29.418 29.418 0 0 0 .195 5.597c.2 1.5.545 2.969 1.096 4.383l.033.09a25.8 25.8 0 0 0 3.032 5.568c1.378 1.954 3.003 3.655 4.908 5.068.749.559 1.547 1.053 2.384 1.488.083.042.164.088.246.126.398.196.792.215 1.189.02.433-.213.784-.536 1.002-.977.108-.22.18-.456.23-.695.053-.254.085-.514.102-.77.016-.271.011-.539-.033-.803a6.834 6.834 0 0 0-1.897-3.69l-.171-.173a1.706 1.706 0 0 1-.41-.75c-.092-.35-.045-.694.135-1.02a.853.853 0 0 1 1.036-.453 6.946 6.946 0 0 1 2.502 1.45 6.096 6.096 0 0 1 1.761 2.392c.31.79.467 1.625.5 2.463.024.58-.027 1.156-.168 1.722-.128.528-.358 1.026-.649 1.49-.404.646-.948 1.166-1.583 1.58a10.887 10.887 0 0 1-2.924 1.34c-1.342.42-2.716.59-4.148.455h-.357A18.818 18.818 0 0 1 5.92 21.03 23.957 23.957 0 0 1 1.15 16.03c-1.29-2.023-2.083-4.22-2.316-6.61-.1-1.002-.128-2.015-.078-3.031.077-1.579.351-3.125.807-4.634A19.516 19.516 0 0 1 1.62.133a.14.14 0 0 1 .158-.052 13.9 13.9 0 0 1 2.87.892 20.378 20.378 0 0 1 4.706 2.528 17.587 17.587 0 0 0 6.069 2.923c.895.228 1.83.336 2.76.28.318-.016.635-.038.951-.073.43-.05.787-.25 1.044-.614a1.082 1.082 0 0 0 .193-.9.96.96 0 0 0-.41-.62c-.672-.432-1.36-.838-2.046-1.246l-.506-.3A3.665 3.665 0 0 1 18.52 3c1.071 1.258 2.055 2.585 3.102 3.864v.05c-.097.098-.2.193-.298.293a61.185 61.185 0 0 1-1.896 1.777c-.506.452-.516.48-.13 1.045.163.24.406.315.688.358.314.048.636.064.954.088a20.088 20.088 0 0 1 2.067.245c.42.083.71.296.877.632.183.376.16.745-.074 1.107-.152.238-.34.444-.52.651l-1.26 1.488" />
                                 </svg>
                             </div>
                             PostgreSQL
@@ -1984,7 +2029,7 @@
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187" />
+                                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                 </svg>
                             </div>
                             GitHub
@@ -2005,13 +2050,13 @@
                                         d="M13.527.099C6.955-.744.942 3.9.099 10.473c-.843 6.572 3.8 12.584 10.373 13.428 6.573.843 12.587-3.801 13.428-10.374C24.744 6.955 20.101.943 13.527.099zm2.471 7.485a.855.855 0 0 0-.593.25l-4.453 4.453-.307-.307-.643-.643c4.389-4.376 5.18-4.418 5.996-3.753zm-4.863 4.861l4.44-4.44a.62.62 0 1 1 .847.903l-4.699 4.125-.588-.588zm.33.643l-1.1.238a.06.06 0 0 1-.067-.032.06.06 0 0 1 .01-.073l.645-.645.512.512zm-2.803-.459l1.172-1.172.879.878-1.979.426a.074.074 0 0 1-.085-.039.072.072 0 0 1 .013-.093zm-3.646 6.058a.076.076 0 0 1-.069-.083.077.077 0 0 1 .022-.046h.002l.946-.946 1.222 1.222-2.123-.147zm2.425-1.256a.228.228 0 0 0-.117.256l.203.865a.125.125 0 0 1-.211.117h-.003l-.934-.934-.294-.295 3.762-3.758 1.82-.393.874.874c-1.255 1.102-2.971 2.201-5.1 3.268zm5.279-3.428h-.002l-.839-.839 4.699-4.125a.952.952 0 0 0 .119-.127c-.148 1.345-2.029 3.245-3.977 5.091zm3.657-6.46l-.003-.002a1.822 1.822 0 0 1 2.459-2.684l-1.61 1.613a.119.119 0 0 0 0 .169l1.247 1.247a1.817 1.817 0 0 1-2.093-.343zm2.578 0a1.714 1.714 0 0 1-.271.218h-.001l-1.207-1.207 1.533-1.533c.661.72.637 1.832-.054 2.522zM18.855 6.05a.143.143 0 0 0-.053.157.416.416 0 0 1-.053.45.14.14 0 0 0 .023.197.141.141 0 0 0 .084.03.14.14 0 0 0 .106-.05.691.691 0 0 0 .087-.751.138.138 0 0 0-.194-.033z" />
                                 </svg>
                             </div>
-                            Figma
+                            Postman
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M11.998 0c1.689.047 3.325.592 4.725 1.575l.224.165v3.828a.202.202 0 01-.314.167 7.416 7.416 0 00-9.293 1.827 7.377 7.377 0 00-1.435 5.18c.127 1.043.465 2.048 1.004 2.976.527.917 1.23 1.73 2.08 2.404l.231.18c.118.09.118.271-.012.36-1.064.743-1.98 1.658-2.715 2.713l-.12.182C2.58 18.238.681 13.918.681 9.197c0-1.074.115-2.096.329-3.066C2.095 2.486 6.673-.174 11.998 0zm10.906 4.514c.45.828.788 1.713 1.004 2.637.217.962.329 1.984.329 3.066 0 4.721-1.899 9.04-5.69 12.36l-.18-.182a11.975 11.975 0 00-2.954-2.442.202.202 0 01-.012-.36c1.775-1.375 3.058-3.197 3.71-5.268.676-2.134.676-4.433.009-6.566a11.93 11.93 0 00-1.01-2.25.202.202 0 01.167-.314h3.913c.072 0 .142.04.177.105l.537.854z" />
+                                        d="M11.536 10.435V5.514L15.823 8v4.92zm-.898 5.753l-4.286-2.484V8.756l4.286 2.484zm8.591-6.425L15.342 7.51l3.887-2.618v.57l1.082-.625v.746l3.208-1.87v4.542l-3.21 1.87v.725l-.337-.194v-.778zm-3.887 2.247v4.619L11.056 19.3v-4.921zm4.969 3.016v-4.54l-3.21 1.868v-.764l-1.081.625v-.55l-3.887 2.617 3.887 2.245 4.29-2.518m-9.673 3.96l-4.287-2.483-4.286 2.46L11.536 24V19.08l-4.286-2.46v1.984l-3.205-1.875v-.724h.01l.337.195v.777l2.858 1.67V13.88m-6.42-.424l4.286-2.484V6.16L3.903 8.647zm-.317-1.129l1.081-.625v.55L1.081 9.074l-1.065-.605V3.883l3.204 1.876V6.47l.34-.188V5.003L.71 3.32v4.61zm4.603-5.22L6.166 3.19l4.288 2.485LV10.6l-4.288-2.486zm4.288-3.153L7.71 1.61v-.57l-1.082.626v-.748l-3.204-1.87v4.615l3.204-1.876v-.7l.327.182v.8zm2.81 2.502L11.056 0v4.92l4.286 2.48z" />
                                 </svg>
                             </div>
                             AWS
@@ -2029,54 +2074,34 @@
             </div>
         </section>
 
-        <section id="tips">
-            <div class="section-label">
-                <span>Leave a Tip</span>
-            </div>
-
-            <h2>Share your thoughts</h2>
-
-            <div class="tips-form">
-                <h3>Leave a note for me</h3>
-                <form id="tipForm">
-                    <div class="form-group">
-                        <label for="tipName">Your Name</label>
-                        <input type="text" id="tipName" placeholder="John Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tipMessage">Your Message</label>
-                        <textarea id="tipMessage" placeholder="Share your feedback, ideas, or just say hi..."
-                            required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Post Note</button>
-                </form>
-            </div>
-
-            <div id="notesContainer">
-                <div class="sticky-notes-grid" id="notesGrid">
-                    <!-- Sticky notes will be dynamically inserted here -->
-                </div>
-            </div>
-        </section>
-
         <section id="contact">
             <div class="section-label">
-                <span>Get in Touch</span>
+                <span>Let's Connect</span>
             </div>
 
             <h2>Let's build something together</h2>
 
             <div
                 style="display: grid; gap: 12px; max-width: 480px; font-family: 'Geist Mono', monospace; font-size: 13px; margin-top: 8px;">
-                <a href="/cdn-cgi/l/email-protection#761e131a1a19360f19030412191b171f185815191b" class="contact-link"
-                    style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
-                    <span style="opacity: 0.5;">→</span> <span class="__cf_email__"
-                        data-cfemail="e48c8188888ba49d8b9196808b89858d8aca878b89">[email&#160;protected]</span>
-                </a>
-                </a>
+                <a href="mailto:youremail@example.com"
+   class="contact-link"
+   style="color: var(--text-primary);
+          text-decoration: none;
+          padding: 20px 24px;
+          background: var(--surface);
+          border: 1.5px solid var(--border);
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 500;
+          letter-spacing: 0.2px;">
+    <span style="opacity: 0.5;">→</span>
+    <span>alihusain.or@gmail.com</span>
+</a>
                 <a href="https://twitter.com/yourusername" class="contact-link"
                     style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
-                    <span style="opacity: 0.5;">→</span> twitter.com/yourusername
+                    <span style="opacity: 0.5;">→</span> x.com/alivldm
                 </a>
             </div>
         </section>
@@ -2088,7 +2113,6 @@
             <div class="footer-links">
                 <a href="#work">Work</a>
                 <a href="#skills">Skills</a>
-                <a href="#tips">Tips</a>
                 <a href="#contact">Contact</a>
             </div>
         </footer>
@@ -2100,11 +2124,10 @@
             <li><a href="#work">Work</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#tips">Tips</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-divider"></div>
-        <a href="https://x.com/yourusername" target="_blank" rel="noopener noreferrer" class="nav-social"
+        <a href="https://x.com/alivldm" target="_blank" rel="noopener noreferrer" class="nav-social"
             aria-label="X (Twitter)">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -2131,100 +2154,6 @@
     </nav>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Tips/Notes Functionality
-            const tipForm = document.getElementById('tipForm');
-            const notesGrid = document.getElementById('notesGrid');
-            const notesContainer = document.getElementById('notesContainer');
-
-            // Load tips from localStorage
-            function loadTips() {
-                const tips = JSON.parse(localStorage.getItem('portfolioTips') || '[]');
-                displayTips(tips);
-            }
-
-            // Save tips to localStorage
-            function saveTips(tips) {
-                localStorage.setItem('portfolioTips', JSON.stringify(tips));
-            }
-
-            // Display tips as sticky notes
-            function displayTips(tips) {
-                if (tips.length === 0) {
-                    notesGrid.innerHTML = '<div class="empty-state">No notes yet. Be the first to leave one!</div>';
-                    return;
-                }
-
-                notesGrid.innerHTML = tips.map((tip, index) => `
-                    <div class="sticky-note" style="animation-delay: ${index * 0.1}s">
-                        <div class="sticky-note-header">
-                            <div class="sticky-note-name">${escapeHtml(tip.name)}</div>
-                            <button class="sticky-note-delete" onclick="deleteTip(${index})" aria-label="Delete note">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="sticky-note-message">${escapeHtml(tip.message)}</div>
-                        <div class="sticky-note-date">${tip.date}</div>
-                    </div>
-                `).join('');
-            }
-
-            // Add new tip
-            tipForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                const name = document.getElementById('tipName').value.trim();
-                const message = document.getElementById('tipMessage').value.trim();
-
-                if (!name || !message) return;
-
-                const tips = JSON.parse(localStorage.getItem('portfolioTips') || '[]');
-                const newTip = {
-                    name: name,
-                    message: message,
-                    date: new Date().toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }),
-                    timestamp: Date.now()
-                };
-
-                tips.unshift(newTip); // Add to beginning
-                saveTips(tips);
-                displayTips(tips);
-
-                // Reset form
-                tipForm.reset();
-
-                // Scroll to notes
-                notesContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            });
-
-            // Delete tip
-            window.deleteTip = function (index) {
-                if (confirm('Delete this note?')) {
-                    const tips = JSON.parse(localStorage.getItem('portfolioTips') || '[]');
-                    tips.splice(index, 1);
-                    saveTips(tips);
-                    displayTips(tips);
-                }
-            };
-
-            // Escape HTML to prevent XSS
-            function escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-
-            // Load tips on page load
-            loadTips();
-
             // Prismatic Burst Generation
             const prismaticBurst = document.getElementById('prismaticBurst');
             const colors = ['#5227FF', '#FF9FFC', '#7cff67'];
