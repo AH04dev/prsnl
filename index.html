@@ -83,6 +83,7 @@
         }
 
         /* Profile Picture Frame */
+        /* Profile Picture Frame */
         .profile-frame {
             position: absolute;
             top: 180px;
@@ -94,7 +95,6 @@
             z-index: 100;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             animation: fadeSlideDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
-            overflow: hidden;
             box-shadow:
                 0 0 0 1px var(--border),
                 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -124,6 +124,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            border-radius: inherit;
         }
 
         .profile-image-container::after {
@@ -134,6 +135,35 @@
                     transparent 0%,
                     rgba(0, 0, 0, 0.1) 100%);
             pointer-events: none;
+        }
+
+        .profile-doodle-svg {
+            position: absolute;
+            top: -16px;
+            left: -16px;
+            width: calc(100% + 32px);
+            height: calc(100% + 32px);
+            z-index: 101;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .profile-doodle-path {
+            fill: none;
+            stroke: var(--text-primary);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawProfileFrame 1.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes drawProfileFrame {
+            to {
+                stroke-dashoffset: 0;
+            }
         }
 
         .profile-image {
@@ -303,6 +333,181 @@
             margin-bottom: 32px;
             letter-spacing: -0.03em;
             color: var(--text-primary);
+        }
+
+        /* Marker Doodle Animation */
+        .doodle-container {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        .doodle-svg {
+            position: absolute;
+            top: -35%;
+            left: -30%;
+            width: 180%;
+            height: 180%;
+            transform: rotate(-12deg);
+            z-index: -1;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .doodle-path {
+            fill: none;
+            stroke: #fde047;
+            /* Yellow marker */
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawEraseDraw 6s ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .doodle-path {
+            stroke: #facc15;
+            /* Slightly richer yellow for dark mode */
+        }
+
+        /* Doodle Stars */
+        .doodle-star {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.8;
+            stroke: var(--text-tertiary);
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: floatTwinkle 4s ease-in-out infinite alternate;
+        }
+
+        .star-1 {
+            top: -10%;
+            left: -15%;
+            width: 32px;
+            height: 32px;
+            transform: rotate(-15deg);
+            animation-delay: 0s;
+        }
+
+        .star-2 {
+            top: 15%;
+            right: -15%;
+            width: 24px;
+            height: 24px;
+            transform: rotate(25deg);
+            animation-delay: 1.5s;
+        }
+
+        .star-3 {
+            bottom: -5%;
+            left: 10%;
+            width: 28px;
+            height: 28px;
+            transform: rotate(-10deg);
+            animation-delay: 0.7s;
+        }
+
+        @keyframes floatTwinkle {
+            0% {
+                transform: translateY(0px) rotate(auto) scale(0.9);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-8px) rotate(auto) scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* Waving Hand Emoji */
+        .wave-emoji {
+            display: inline-block;
+            transform-origin: 70% 70%;
+        }
+
+        h1:hover .wave-emoji {
+            animation: wave-animation 2s infinite;
+        }
+
+        @keyframes wave-animation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            10% {
+                transform: rotate(14deg);
+            }
+
+            20% {
+                transform: rotate(-8deg);
+            }
+
+            30% {
+                transform: rotate(14deg);
+            }
+
+            40% {
+                transform: rotate(-4deg);
+            }
+
+            50% {
+                transform: rotate(10deg);
+            }
+
+            60% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes drawEraseDraw {
+            0% {
+                stroke-dashoffset: 100;
+                opacity: 0;
+            }
+
+            5%,
+            25% {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+
+            35%,
+            45% {
+                stroke-dashoffset: -100;
+                opacity: 1;
+            }
+
+            46% {
+                stroke-dashoffset: -100;
+                opacity: 0;
+            }
+
+            47% {
+                stroke-dashoffset: 100;
+                opacity: 0;
+            }
+
+            55%,
+            85% {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+
+            100% {
+                stroke-dashoffset: -100;
+                opacity: 1;
+            }
         }
 
         .tagline {
@@ -1525,7 +1730,22 @@
 
 
     <!-- Profile Picture Frame -->
-    <div class="profile-frame">
+    <div class="profile-frame" style="overflow: visible;">
+        <!-- Doodle Stars -->
+        <svg class="doodle-star star-1" viewBox="0 0 100 100">
+            <path d="M50 5 C55 40, 80 45, 95 50 C60 55, 55 80, 50 95 C45 60, 20 55, 5 50 C40 45, 45 20, 50 5" />
+        </svg>
+        <svg class="doodle-star star-2" viewBox="0 0 100 100">
+            <path d="M50 5 C55 40, 80 45, 95 50 C60 55, 55 80, 50 95 C45 60, 20 55, 5 50 C40 45, 45 20, 50 5" />
+        </svg>
+        <svg class="doodle-star star-3" viewBox="0 0 100 100">
+            <path d="M50 5 C55 40, 80 45, 95 50 C60 55, 55 80, 50 95 C45 60, 20 55, 5 50 C40 45, 45 20, 50 5" />
+        </svg>
+
+        <svg class="profile-doodle-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="profile-doodle-path" pathLength="100"
+                d="M 5 5 C 30 2, 70 8, 95 5 C 98 40, 92 70, 95 95 C 60 92, 40 98, 5 95 C 8 60, 2 40, 5 10 C 30 8, 60 12, 90 8" />
+        </svg>
         <div class="profile-image-container">
             <img src="me.jpeg" alt="Profile" class="profile-image">
             <div class="profile-label">ME</div>
@@ -1533,13 +1753,20 @@
     </div>
 
     <div class="container">
-        <header>
+        <header style="position: relative;">
 
-            <h1>Hey 👋 I'm Ali</h1>
-            <p class="tagline">I like building things for the web</p>
+            <h1><span class="doodle-container">Ali<svg class="doodle-svg" viewBox="0 0 100 100"
+                        preserveAspectRatio="none">
+                        <path class="doodle-path" pathLength="100"
+                            d="M 25 40 C 35 15, 85 15, 90 45 C 95 80, 20 85, 10 50 C 0 15, 70 5, 85 30 C 95 50, 40 85, 20 60" />
+                    </svg></span> here <span class="wave-emoji">👋</span></h1>
+            <p class="tagline">I design and build for the web</p>
             <div class="about-simple" id="about">
-                <p><strong>A web developer</strong> crafting experiences with modern tech and intentional design.
-                    Currently growing, experimenting, and shipping projects</p>
+                <p><strong>Full-stack web developer & freelancer.</strong>
+                    I build web apps that actually slap.
+                    Specialized in the React ecosystem, I handle the entire pipeline. From complex backend logic to
+                    hyper-clean, intuitive Ul.
+                    When I'm not helping clients secure absolute Ws on their projects, I'm busy cooking up my own.</p>
             </div>
         </header>
 
@@ -1547,15 +1774,14 @@
 
         <section id="work">
             <div class="section-label">
-                <span>Selected Projects</span>
+                <span>Latest Projects</span>
             </div>
 
             <div class="projects-grid">
-                <a class="project-card" href="https://example.com/ecommerce" target="_blank" rel="noopener noreferrer">
-                    <img src="ecommerce.png" alt="E-Commerce Platform preview" class="project-preview">
+                <a class="project-card" href="https://crossbits.pro" target="_blank" rel="noopener noreferrer">
+                    <img src="crossbits.png" alt="Crossbits preview" class="project-preview">
                     <div class="project-header">
-                        <h3 class="project-title">E-Commerce Platform</h3>
-                        <span class="project-year">2024</span>
+                        <h3 class="project-title">Cross Bits</h3>
                     </div>
                     <p class="project-description">
                         Full-stack e-commerce solution with real-time inventory management,
@@ -1572,11 +1798,10 @@
                     </div>
                 </a>
 
-                <a class="project-card" href="https://example.com/saas" target="_blank" rel="noopener noreferrer">
+                <a class="project-card" href="deadroute.vercel.app" target="_blank" rel="noopener noreferrer">
                     <img src="saas.png" alt="SaaS Dashboard preview" class="project-preview">
                     <div class="project-header">
-                        <h3 class="project-title">SaaS Dashboard</h3>
-                        <span class="project-year">2024</span>
+                        <h3 class="project-title">Dead Route</h3>
                     </div>
                     <p class="project-description">
                         Analytics and monitoring dashboard for SaaS platforms with
@@ -1848,13 +2073,6 @@
                     <span style="opacity: 0.5;">→</span> <span class="__cf_email__"
                         data-cfemail="e48c8188888ba49d8b9196808b89858d8aca878b89">[email&#160;protected]</span>
                 </a>
-                <a href="https://github.com/yourusername" class="contact-link"
-                    style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
-                    <span style="opacity: 0.5;">→</span> github.com/yourusername
-                </a>
-                <a href="https://linkedin.com/in/yourusername" class="contact-link"
-                    style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
-                    <span style="opacity: 0.5;">→</span> linkedin.com/in/yourusername
                 </a>
                 <a href="https://twitter.com/yourusername" class="contact-link"
                     style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
