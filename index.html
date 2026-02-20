@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');</script>
 
 <head>
     <meta charset="UTF-8">
@@ -177,76 +178,62 @@
         /* Theme Toggle */
         .theme-toggle {
             position: relative;
-            top: auto;
-            right: auto;
-            width: 56px;
-            height: 56px;
-            background: var(--surface);
-            border: none;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
             cursor: pointer;
-            display: grid;
-            place-items: center;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 101;
-            overflow: hidden;
-            animation: fadeSlideDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
-            box-shadow:
-                0 0 0 1px var(--border),
-                0 2px 8px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
         }
 
         [data-theme="dark"] .theme-toggle {
-            box-shadow:
-                0 0 0 1px var(--border),
-                0 2px 8px rgba(0, 0, 0, 0.6);
-        }
-
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            opacity: 0;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .theme-toggle:hover::before {
-            opacity: 0.05;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .theme-toggle:hover {
-            box-shadow:
-                0 0 0 1px var(--accent),
-                0 4px 16px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
         }
 
         [data-theme="dark"] .theme-toggle:hover {
-            box-shadow:
-                0 0 0 1px var(--accent),
-                0 4px 16px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .theme-toggle svg {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             stroke: var(--text-primary);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 1;
-            grid-area: 1 / 1;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            position: absolute;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .theme-toggle:hover svg {
-            transform: rotate(180deg) scale(1.1);
+        .theme-toggle .sun-icon {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
         }
 
-        .theme-icon {
+        .theme-toggle .moon-icon {
             opacity: 0;
-            transform: scale(0.8) rotate(-90deg);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.5) rotate(90deg);
         }
 
-        .theme-icon.active {
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            opacity: 0;
+            transform: scale(0.5) rotate(-90deg);
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
             opacity: 1;
             transform: scale(1) rotate(0deg);
         }
@@ -580,55 +567,126 @@
             }
         }
 
-        /* Navigation */
+        /* Navigation - Bottom Fixed Glass Bar */
         nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 80px;
-            padding: 16px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            animation: fadeSlideDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 9999px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                0 2px 8px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            z-index: 1000;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: navSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+        }
+
+        [data-theme="dark"] nav {
+            background: rgba(23, 23, 23, 0.55);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 2px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        nav.nav-hidden {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes navSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 48px;
+            gap: 6px;
             font-family: 'Geist Mono', monospace;
             font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.3px;
         }
 
-        nav a {
+        nav li a {
             color: var(--text-secondary);
             text-decoration: none;
             position: relative;
-            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 4px 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 8px 14px;
+            border-radius: 9999px;
+            display: block;
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1.5px;
-            background: var(--accent);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        nav li a:hover {
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.06);
         }
 
-        nav a:hover {
-            color: var(--accent);
+        [data-theme="dark"] nav li a:hover {
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        nav a:hover::after {
-            width: 100%;
+        nav li a::after {
+            display: none;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+            opacity: 0.5;
+            flex-shrink: 0;
+        }
+
+        .nav-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+        }
+
+        .nav-social:hover {
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .nav-social:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-social svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         /* Section */
@@ -696,6 +754,9 @@
             position: relative;
             overflow: hidden;
             border-left: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .project-card::before {
@@ -736,6 +797,22 @@
             transform: translateX(4px);
         }
 
+        .project-preview {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(40%);
+        }
+
+        .project-card:hover .project-preview {
+            filter: grayscale(0%);
+            transform: scale(1.01);
+            border-color: var(--accent);
+        }
+
         .project-header {
             display: flex;
             justify-content: space-between;
@@ -771,6 +848,13 @@
             letter-spacing: -0.01em;
         }
 
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
         .project-tags {
             display: flex;
             flex-wrap: wrap;
@@ -794,6 +878,25 @@
             background: var(--surface);
             color: var(--accent);
             transform: translateY(-1px);
+        }
+
+        .visit-link {
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+        .project-card:hover .visit-link {
+            color: var(--accent);
         }
 
         /* Skills */
@@ -1367,49 +1470,15 @@
     </div>
 
     <div class="container">
-        <nav>
-            <ul>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#tips">Tips</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <!-- Theme Toggle -->
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <svg class="theme-icon active" id="sunIcon" viewBox="0 0 24 24" fill="none" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg class="theme-icon" id="moonIcon" viewBox="0 0 24 24" fill="none" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-        </nav>
         <header>
 
-            <h1>Hey 👋 I’m Ali</h1>
+            <h1>Hey 👋 I'm Ali</h1>
             <p class="tagline">I like building things for the web</p>
-        </header>
-
-        <section id="about">
-            <div class="section-label">
-                <span>About Me</span>
-            </div>
-            <div class="about-simple">
+            <div class="about-simple" id="about">
                 <p><strong>A web developer</strong> crafting experiences with modern tech and intentional design.
                     Currently growing, experimenting, and shipping projects</p>
             </div>
-        </section>
+        </header>
 
 
 
@@ -1419,7 +1488,8 @@
             </div>
 
             <div class="projects-grid">
-                <div class="project-card">
+                <a class="project-card" href="https://example.com/ecommerce" target="_blank" rel="noopener noreferrer">
+                    <img src="ecommerce.png" alt="E-Commerce Platform preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">E-Commerce Platform</h3>
                         <span class="project-year">2024</span>
@@ -1428,15 +1498,19 @@
                         Full-stack e-commerce solution with real-time inventory management,
                         payment processing, and analytics dashboard.
                     </p>
-                    <div class="project-tags">
-                        <span class="tag">React</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">PostgreSQL</span>
-                        <span class="tag">Stripe</span>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Node.js</span>
+                            <span class="tag">PostgreSQL</span>
+                            <span class="tag">Stripe</span>
+                        </div>
+                        <span class="visit-link">Visit Site →</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="project-card">
+                <a class="project-card" href="https://example.com/saas" target="_blank" rel="noopener noreferrer">
+                    <img src="saas.png" alt="SaaS Dashboard preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">SaaS Dashboard</h3>
                         <span class="project-year">2024</span>
@@ -1445,15 +1519,19 @@
                         Analytics and monitoring dashboard for SaaS platforms with
                         customizable widgets and real-time data visualization.
                     </p>
-                    <div class="project-tags">
-                        <span class="tag">Next.js</span>
-                        <span class="tag">TypeScript</span>
-                        <span class="tag">Tailwind</span>
-                        <span class="tag">D3.js</span>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">Next.js</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Tailwind</span>
+                            <span class="tag">D3.js</span>
+                        </div>
+                        <span class="visit-link">Visit Site →</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="project-card">
+                <a class="project-card" href="https://example.com/cms" target="_blank" rel="noopener noreferrer">
+                    <img src="cms.png" alt="Portfolio CMS preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">Portfolio CMS</h3>
                         <span class="project-year">2023</span>
@@ -1462,15 +1540,19 @@
                         Headless CMS for creative professionals with drag-and-drop
                         portfolio builder and client management system.
                     </p>
-                    <div class="project-tags">
-                        <span class="tag">Vue.js</span>
-                        <span class="tag">Express</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">AWS</span>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">Vue.js</span>
+                            <span class="tag">Express</span>
+                            <span class="tag">MongoDB</span>
+                            <span class="tag">AWS</span>
+                        </div>
+                        <span class="visit-link">Visit Site →</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="project-card">
+                <a class="project-card" href="https://example.com/landing" target="_blank" rel="noopener noreferrer">
+                    <img src="landing.png" alt="Mobile App Landing preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">Mobile App Landing</h3>
                         <span class="project-year">2023</span>
@@ -1479,12 +1561,15 @@
                         High-converting landing page for mobile app launch with
                         animations and A/B testing framework.
                     </p>
-                    <div class="project-tags">
-                        <span class="tag">React</span>
-                        <span class="tag">Framer Motion</span>
-                        <span class="tag">Vercel</span>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Framer Motion</span>
+                            <span class="tag">Vercel</span>
+                        </div>
+                        <span class="visit-link">Visit Site →</span>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -1728,7 +1813,41 @@
         </footer>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <!-- Bottom Navigation Bar -->
+    <nav id="bottomNav">
+        <ul>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#tips">Tips</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-divider"></div>
+        <a href="https://x.com/yourusername" target="_blank" rel="noopener noreferrer" class="nav-social"
+            aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"
+            onclick="(function(){ var h=document.documentElement; var t=h.getAttribute('data-theme')==='light'?'dark':'light'; h.setAttribute('data-theme',t); localStorage.setItem('theme',t); })()">
+            <svg class="sun-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </nav>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Tips/Notes Functionality
@@ -1864,30 +1983,44 @@
 
             // Theme Toggle Functionality
             const themeToggle = document.getElementById('themeToggle');
-            const sunIcon = document.getElementById('sunIcon');
-            const moonIcon = document.getElementById('moonIcon');
             const html = document.documentElement;
 
             // Check for saved theme preference or default to light mode
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            html.setAttribute('data-theme', currentTheme);
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
 
-            // Update icon visibility
-            if (currentTheme === 'dark') {
-                sunIcon.classList.remove('active');
-                moonIcon.classList.add('active');
+            themeToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const current = html.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+            });
+
+            // Navigation scroll show/hide
+            const bottomNav = document.getElementById('bottomNav');
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+
+            function handleNavScroll() {
+                const currentScrollY = window.scrollY;
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    // Scrolling down - hide nav
+                    bottomNav.classList.add('nav-hidden');
+                } else {
+                    // Scrolling up - show nav
+                    bottomNav.classList.remove('nav-hidden');
+                }
+                lastScrollY = currentScrollY;
+                ticking = false;
             }
 
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-
-                // Toggle icons
-                sunIcon.classList.toggle('active');
-                moonIcon.classList.toggle('active');
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(handleNavScroll);
+                    ticking = true;
+                }
             });
 
             // Smooth scroll for navigation
