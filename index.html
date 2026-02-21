@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');</script>
 
@@ -21,6 +21,7 @@
             --text-tertiary: #a3a3a3;
             --accent: #000000;
             --accent-secondary: #171717;
+            --wip-glow: #f59e0b;
             --notepad-lines: #e8e8e8;
             --grid-size: 32px;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -38,6 +39,7 @@
             --text-tertiary: #525252;
             --accent: #ffffff;
             --accent-secondary: #e5e5e5;
+            --wip-glow: #fbbf24;
             --notepad-lines: #1a1a1a;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
@@ -514,81 +516,42 @@
             letter-spacing: -0.01em;
         }
 
-        /* About Me Note Card */
+        /* About Me */
         .about-simple {
-            max-width: 600px;
-            margin-top: 64px;
-            padding: 40px;
-            background: #fffdf5;
-            /* Light yellow warm note color */
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 4px;
-            box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.08);
-            position: relative;
-            transform: rotate(-1deg);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            color: #111;
-        }
-
-        [data-theme="dark"] .about-simple {
-            background: #232320;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.3);
-            color: #ececec;
-        }
-
-        /* Tape effect */
-        .about-simple::before {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%) rotate(2deg);
-            width: 100px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            z-index: 2;
-        }
-
-        [data-theme="dark"] .about-simple::before {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            max-width: 560px;
+            margin-top: 30px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
         }
 
         .about-simple:hover {
-            box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.12);
-            transform: rotate(-0.5deg) translateY(-2px);
-        }
-
-        [data-theme="dark"] .about-simple:hover {
-            box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.4);
+            border-top-color: var(--accent);
         }
 
         .about-title {
             font-family: 'Geist Mono', monospace;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.9px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            color: var(--text-tertiary);
         }
 
         .about-simple p {
-            font-size: 15px;
-            line-height: 1.8;
+            font-size: 14px;
+            line-height: 1.75;
             letter-spacing: -0.01em;
             margin: 0;
             font-family: 'Geist', sans-serif;
+            color: var(--text-secondary);
         }
 
         .about-simple p strong {
             font-weight: 700;
+            color: var(--text-primary);
         }
 
         /* Tips/Notes Section */
@@ -798,7 +761,7 @@
         }
 
         .empty-state::before {
-            content: '📝';
+            content: 'Ã°Å¸â€œÂ';
             display: block;
             font-size: 48px;
             margin-bottom: 16px;
@@ -994,21 +957,27 @@
         /* Project cards */
         .projects-grid {
             display: grid;
-            gap: 2px;
-            background: var(--border-subtle);
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            background: transparent;
         }
 
         .project-card {
             background: var(--surface);
-            padding: 48px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            border-left: 2px solid transparent;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card::before {
@@ -1016,52 +985,102 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 2px;
-            height: 0;
-            background: var(--accent);
-            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .project-card::after {
-            content: '→';
-            position: absolute;
-            top: 48px;
-            right: 48px;
-            font-size: 20px;
-            color: var(--text-tertiary);
+            right: 0;
+            height: 60%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, transparent 55%);
             opacity: 0;
-            transform: translateX(-8px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .project-card:hover::before {
-            height: 100%;
+            opacity: 1;
         }
 
+        .project-card::after,
         .project-card:hover::after {
-            opacity: 1;
-            transform: translateX(0);
+            content: none;
+            display: none;
+        }
+
+        .project-card.project-card--wip {
+            border-color: rgba(245, 158, 11, 0.42);
+            box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.24);
+        }
+
+        [data-theme="dark"] .project-card.project-card--wip {
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.24);
+        }
+
+        .project-card.project-card--wip::after,
+        .project-card.project-card--wip:hover::after {
+            content: '';
+            display: block;
+            position: absolute;
+            inset: -42%;
+            border-radius: 999px;
+            background: radial-gradient(circle,
+                    rgba(245, 158, 11, 0.28) 0%,
+                    rgba(245, 158, 11, 0.14) 24%,
+                    transparent 62%);
+            pointer-events: none;
+            z-index: 0;
+            animation: wip-radiate 3.2s ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .project-card.project-card--wip::after,
+        [data-theme="dark"] .project-card.project-card--wip:hover::after {
+            background: radial-gradient(circle,
+                    rgba(251, 191, 36, 0.32) 0%,
+                    rgba(251, 191, 36, 0.16) 26%,
+                    transparent 64%);
+        }
+
+        .project-card.project-card--wip:hover {
+            border-color: rgba(245, 158, 11, 0.68);
+            box-shadow:
+                0 0 0 1px rgba(245, 158, 11, 0.45),
+                0 0 30px rgba(245, 158, 11, 0.2);
+        }
+
+        [data-theme="dark"] .project-card.project-card--wip:hover {
+            border-color: rgba(251, 191, 36, 0.8);
+            box-shadow:
+                0 0 0 1px rgba(251, 191, 36, 0.5),
+                0 0 34px rgba(251, 191, 36, 0.25);
+        }
+
+        .project-card.project-card--wip>* {
+            position: relative;
+            z-index: 1;
         }
 
         .project-card:hover {
             background: var(--surface-elevated);
+            border-color: var(--accent);
             box-shadow: var(--shadow-md);
-            transform: translateX(4px);
+            transform: translateY(-6px);
         }
 
         .project-preview {
             width: 100%;
-            height: 220px;
-            object-fit: cover;
+            aspect-ratio: 21 / 10;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
             border: 1px solid var(--border);
-            margin-bottom: 24px;
+            border-radius: 12px;
+            background: var(--surface-elevated);
+            padding: 6px;
+            margin-bottom: 20px;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            filter: grayscale(40%);
+            filter: grayscale(20%);
         }
 
         .project-card:hover .project-preview {
             filter: grayscale(0%);
-            transform: scale(1.01);
+            transform: scale(1.02);
             border-color: var(--accent);
         }
 
@@ -1069,11 +1088,12 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
+            gap: 16px;
         }
 
         .project-title {
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 600;
             letter-spacing: -0.02em;
             line-height: 1.3;
@@ -1092,19 +1112,51 @@
             letter-spacing: 0.3px;
         }
 
+        .project-card.project-card--wip .project-year {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(245, 158, 11, 0.55);
+            background: rgba(245, 158, 11, 0.16);
+            color: #7c2d12;
+            font-weight: 600;
+            letter-spacing: 0.45px;
+        }
+
+        [data-theme="dark"] .project-card.project-card--wip .project-year {
+            border-color: rgba(251, 191, 36, 0.52);
+            background: rgba(251, 191, 36, 0.16);
+            color: #fcd34d;
+        }
+
+        .project-card.project-card--wip .project-year::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--wip-glow);
+            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.62);
+            animation: wip-dot-pulse 1.9s ease-out infinite;
+        }
+
         .project-description {
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             font-size: 15px;
             line-height: 1.7;
             letter-spacing: -0.01em;
+            flex: 1;
         }
 
         .project-footer {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 16px;
+            align-items: flex-end;
+            gap: 14px;
+            margin-top: auto;
+            flex-wrap: wrap;
         }
 
         .project-tags {
@@ -1115,11 +1167,12 @@
 
         .tag {
             font-family: 'Geist Mono', monospace;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
-            padding: 6px 12px;
-            background: var(--bg);
+            padding: 5px 11px;
+            background: var(--surface-elevated);
             border: 1px solid var(--border);
+            border-radius: 999px;
             color: var(--text-secondary);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             letter-spacing: 0.2px;
@@ -1127,9 +1180,9 @@
 
         .project-card:hover .tag {
             border-color: var(--accent);
-            background: var(--surface);
-            color: var(--accent);
-            transform: translateY(-1px);
+            background: var(--accent);
+            color: var(--bg);
+            transform: translateY(-1px) scale(1.01);
         }
 
         .visit-link {
@@ -1142,13 +1195,54 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 6px;
             white-space: nowrap;
-            transition: color 0.3s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 8px 12px;
+            background: var(--surface);
         }
 
         .project-card:hover .visit-link {
-            color: var(--accent);
+            color: var(--bg);
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        @keyframes wip-radiate {
+
+            0%,
+            100% {
+                transform: scale(0.86);
+                opacity: 0.24;
+            }
+
+            50% {
+                transform: scale(1.14);
+                opacity: 0.62;
+            }
+        }
+
+        @keyframes wip-dot-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.62);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .project-card.project-card--wip::after,
+            .project-card.project-card--wip .project-year::before {
+                animation: none;
+            }
         }
 
         /* Skills */
@@ -1247,11 +1341,130 @@
         .skill-logo svg {
             width: 100%;
             height: 100%;
-            fill: var(--text-primary);
+            display: block;
+            overflow: visible;
+            color: var(--text-primary);
+            fill: currentColor;
         }
 
         [data-theme="dark"] .skill-logo svg {
-            fill: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        /* Contact */
+        .connect-panel {
+            display: grid;
+            gap: 12px;
+            max-width: 560px;
+            margin-top: 8px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .connect-label {
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .connect-row {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .connect-email-input {
+            width: 100%;
+            min-width: 0;
+            padding: 14px 16px;
+            background: var(--bg);
+            color: var(--text-primary);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
+        }
+
+        .connect-email-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .connect-email-input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+        }
+
+        .connect-btn,
+        .x-connect-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 18px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            text-decoration: none;
+            white-space: nowrap;
+            font-family: 'Geist Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .connect-btn {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.95);
+        }
+
+        .x-connect-btn {
+            background: #000000;
+            border-color: #000000;
+            color: #ffffff;
+            width: fit-content;
+            gap: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+        }
+
+        [data-theme="dark"] .x-connect-btn {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #000000;
+        }
+
+        .x-connect-icon {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            flex-shrink: 0;
+            display: block;
+        }
+
+        .x-connect-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.95);
+        }
+
+        .connect-secondary {
+            margin-top: 12px;
         }
 
         /* Footer */
@@ -1574,8 +1787,8 @@
             }
 
             .about-simple {
-                margin-top: 32px;
-                padding: 24px;
+                margin-top: 24px;
+                padding-top: 16px;
             }
 
             nav ul {
@@ -1593,18 +1806,28 @@
                 bottom: 16px;
             }
 
-            .project-card,
-            .skill-category {
-                padding: 32px;
+            .projects-grid {
+                grid-template-columns: 1fr;
             }
 
-            .project-card::after {
-                top: 32px;
-                right: 32px;
+            .project-card {
+                padding: 20px;
+            }
+
+            .project-footer {
+                align-items: flex-start;
             }
 
             .skills-list {
                 gap: 10px;
+            }
+
+            .connect-row {
+                flex-direction: column;
+            }
+
+            .x-connect-btn {
+                padding: 14px 16px;
             }
 
             .skill-item {
@@ -1660,12 +1883,21 @@
             }
 
             .about-simple {
-                padding: 20px;
+                padding-top: 14px;
             }
 
-            .project-card,
-            .skill-category {
-                padding: 24px;
+            .project-card {
+                padding: 18px;
+            }
+
+            .project-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .visit-link {
+                justify-content: center;
+                width: 100%;
             }
 
             .skills-list {
@@ -1721,8 +1953,13 @@
                 height: 20px;
             }
 
+            .connect-panel {
+                padding: 18px;
+            }
+
             .project-preview {
-                height: 160px;
+                aspect-ratio: 21 / 10;
+                height: auto;
             }
         }
 
@@ -1805,8 +2042,8 @@
                     </svg></span> here <span class="wave-emoji">👋</span></h1>
             <p class="tagline">I design and build for the web</p>
             <div class="about-simple" id="about">
-                <div class="about-title">📌 About Me</div>
-                <p><strong>Full-stack web developer & freelancer.</strong>
+                <div class="about-title">About Me</div>
+                <p><strong> Full-stack web developer & freelancer</strong>
                     I build web apps that actually slap.
                     Specialized in the React ecosystem, I handle the entire pipeline. From complex backend logic to
                     hyper-clean, intuitive Ul.
@@ -1822,84 +2059,82 @@
             </div>
 
             <div class="projects-grid">
-                <a class="project-card" href="https://crossbits.pro" target="_blank" rel="noopener noreferrer">
+                <a class="project-card project-card--wip" href="https://crossbits.pro" target="_blank"
+                    rel="noopener noreferrer">
                     <img src="crossbits.png" alt="Crossbits preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">Cross Bits</h3>
+                        <span class="project-year">WIP</span>
                     </div>
                     <p class="project-description">
-                        Full-stack e-commerce solution with real-time inventory management,
-                        payment processing, and analytics dashboard.
-                    </p>
-                    <div class="project-footer">
-                        <div class="project-tags">
-                            <span class="tag">React</span>
-                            <span class="tag">Node.js</span>
-                            <span class="tag">PostgreSQL</span>
-                            <span class="tag">Stripe</span>
-                        </div>
-                        <span class="visit-link">Visit Site →</span>
-                    </div>
-                </a>
-
-                <a class="project-card" href="deadroute.vercel.app" target="_blank" rel="noopener noreferrer">
-                    <img src="saas.png" alt="SaaS Dashboard preview" class="project-preview">
-                    <div class="project-header">
-                        <h3 class="project-title">Dead Route</h3>
-                    </div>
-                    <p class="project-description">
-                        Analytics and monitoring dashboard for SaaS platforms with
-                        customizable widgets and real-time data visualization.
+                        A mobile UI exploration centered around reusable components, visual hierarchy, and expressive
+                        animations. Each element is designed to enhance feedback, improve usability, and deliver a
+                        fluid, engaging interface experience.
                     </p>
                     <div class="project-footer">
                         <div class="project-tags">
                             <span class="tag">Next.js</span>
                             <span class="tag">TypeScript</span>
-                            <span class="tag">Tailwind</span>
-                            <span class="tag">D3.js</span>
+                            <span class="tag">Animation & transition systems</span>
                         </div>
-                        <span class="visit-link">Visit Site →</span>
+                    </div>
+                </a>
+
+                <a class="project-card project-card--wip" href="https://deadroute.vercel.app" target="_blank"
+                    rel="noopener noreferrer">
+                    <img src="deadroute.png" alt="SaaS Dashboard preview" class="project-preview">
+                    <div class="project-header">
+                        <h3 class="project-title">Dead Route</h3>
+                        <span class="project-year">WIP</span>
+                    </div>
+                    <p class="project-description">
+                        Deadroute API Tracker is a monitoring and diagnostics interface designed to detect, track, and
+                        visualize API failures, latency issues, and service disruptions in real time.
+                    </p>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">Next.js</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Postman</span>
+                            <span class="tag">REST API Integration</span>
+                            <span class="tag">Data Visualization Libraries</span>
+                        </div>
                     </div>
                 </a>
 
                 <a class="project-card" href="https://example.com/cms" target="_blank" rel="noopener noreferrer">
-                    <img src="cms.png" alt="Portfolio CMS preview" class="project-preview">
+                    <img src="datalytics.png" alt="Portfolio CMS preview" class="project-preview">
                     <div class="project-header">
-                        <h3 class="project-title">Portfolio CMS</h3>
-                        <span class="project-year">2023</span>
+                        <h3 class="project-title">Datalytics</h3>
                     </div>
                     <p class="project-description">
-                        Headless CMS for creative professionals with drag-and-drop
-                        portfolio builder and client management system.
-                    </p>
-                    <div class="project-footer">
-                        <div class="project-tags">
-                            <span class="tag">Vue.js</span>
-                            <span class="tag">Express</span>
-                            <span class="tag">MongoDB</span>
-                            <span class="tag">AWS</span>
-                        </div>
-                        <span class="visit-link">Visit Site →</span>
-                    </div>
-                </a>
-
-                <a class="project-card" href="https://example.com/landing" target="_blank" rel="noopener noreferrer">
-                    <img src="landing.png" alt="Mobile App Landing preview" class="project-preview">
-                    <div class="project-header">
-                        <h3 class="project-title">Mobile App Landing</h3>
-                        <span class="project-year">2023</span>
-                    </div>
-                    <p class="project-description">
-                        High-converting landing page for mobile app launch with
-                        animations and A/B testing framework.
+                        Datalytics is a data analytics and visualization platform designed to explore, manipulate, and
+                        interpret datasets through a clean, structured interface.
                     </p>
                     <div class="project-footer">
                         <div class="project-tags">
                             <span class="tag">React</span>
-                            <span class="tag">Framer Motion</span>
-                            <span class="tag">Vercel</span>
+                            <span class="tag">Python</span>
                         </div>
-                        <span class="visit-link">Visit Site →</span>
+                    </div>
+                </a>
+
+                <a class="project-card" href="https://example.com/landing" target="_blank" rel="noopener noreferrer">
+                    <img src="glyphforge.png" alt="Mobile App Landing preview" class="project-preview">
+                    <div class="project-header">
+                        <h3 class="project-title">GlyphForge</h3>
+                    </div>
+                    <p class="project-description">
+                        GlyphForge is a motif-driven type exploration tool designed to transform visual patterns into
+                        expressive glyph systems.
+                    </p>
+                    <div class="project-footer">
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Canvas / SVG</span>
+                            <span class="tag">Vector Export</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -1925,18 +2160,20 @@
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>Next.js</title>
                                     <path
-                                        d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.573 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.5-.054z" />
+                                        d="M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z" />
                                 </svg>
                             </div>
                             Next.js
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.81.39.024.75.426.87.696l2.067-1.296c-.604-1.127-1.605-1.848-3.048-1.956-1.593-.111-3.097.669-3.525 2.154-.366 1.257.447 2.217 1.344 2.661.996.48 2.052.756 2.22 1.242.111.315.111.666-.084.975-.411.621-1.392.798-2.064.63-.585-.147-1.164-.705-1.422-1.251l-2.091 1.293c.771 1.644 2.126 2.457 3.843 2.517 2.133.069 3.518-.765 3.966-2.148zm-11.454-3.111c0 2.268.033 4.221-.063 4.221-1.203 0-2.052-.765-2.226-1.902l-2.247.969c.567 1.8 2.07 2.919 4.383 2.919 2.508 0 3.321-1.488 3.321-4.221V6H10.58v12.054z" />
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>JavaScript</title>
+                                    <path fill="#F7DF1E"
+                                        d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" />
                                 </svg>
                             </div>
                             JavaScript
@@ -1976,7 +2213,8 @@
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>Express</title>
                                     <path
                                         d="M24 18.588a1.529 1.529 0 01-1.895-.72l-3.45-4.771-.5-.667-4.003 5.444a1.466 1.466 0 01-1.802.708l5.158-6.92-4.798-6.251a1.595 1.595 0 011.9.666l3.576 4.83 3.596-4.81a1.435 1.435 0 011.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 000 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27 1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.078 4.078 0 002.582-2.876c.207-.666.548-.78 1.174-.588a5.417 5.417 0 01-2.589 3.957 6.272 6.272 0 01-7.306-.933 6.575 6.575 0 01-1.64-3.858c0-.235-.08-.455-.134-.666A88.33 88.33 0 010 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278-2.882-.04-4.944 2.094-5.071 5.264z" />
                                 </svg>
@@ -1985,27 +2223,34 @@
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.14.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23v-2.5l.04-1.24.13-1.08.23-.92.3-.77.38-.63.45-.48.5-.35.58-.23.64-.13.68-.05h3.69l.13-.01h-2.01l-.25-.01-.22-.05-.2-.09-.16-.12-.13-.17-.09-.21-.05-.26-.03-.3v-1.18l.03-.31.06-.26.09-.21.12-.16.16-.12.19-.08.23-.05.26-.01h4.94l1.16.03zM12.98 1.54c-.2.02-.37.06-.52.12-.15.06-.27.14-.37.25-.1.11-.17.24-.22.4-.04.15-.06.33-.06.52s.02.37.06.53c.05.15.12.28.22.39.1.11.22.18.37.24.15.06.32.09.52.09s.37-.03.52-.09c.15-.06.27-.13.37-.24.1-.11.17-.24.22-.39.04-.16.06-.34.06-.53s-.02-.37-.06-.52c-.05-.16-.12-.29-.22-.4-.1-.11-.22-.19-.37-.25-.15-.06-.32-.1-.52-.12zm-3.23 22.28l-.9-.2-.73-.26-.59-.3-.45-.32-.34-.34-.24-.34-.17-.33-.1-.3-.04-.26-.02-.2.01-.13V15.5l.05-.63.14-.55.21-.46.26-.38.3-.31.33-.25.35-.19.35-.14.33-.1.3-.07.26-.04.21-.02h14.86l.69-.05.59-.14.5-.22.41-.27.33-.32.27-.35.2-.36.15-.37.1-.35.07-.32.04-.27.02-.21v-3.06h3.17l.21.03.28.07.32.12.35.18.36.26.36.36.35.46.32.59.28.73.21.88.14 1.05.05 1.23v2.5l-.04 1.24-.13 1.08-.23.92-.3.77-.38.63-.45.48-.5.35-.58.23-.64.13-.68.05h-3.69l-.13.01h2.01l.24.01.22.05.2.09.16.12.13.17.09.21.05.26.03.3v1.18l-.03.31-.06.26-.09.21-.12.16-.16.12-.19.08-.23.05-.26.01h-4.94l-1.16-.03zM11.02 22.46c.2-.02.37-.06.52-.12.15-.06.27-.14.37-.25.1-.11.17-.24.22-.4.04-.15.06-.33.06-.52s-.02-.37-.06-.53c-.05-.15-.12-.28-.22-.39-.1-.11-.22-.18-.37-.24-.15-.06-.32-.09-.52-.09s-.37.03-.52.09c-.15.06-.27.13-.37.24-.1.11-.17.24-.22.39-.04.16-.06.34-.06.53s.02.37.06.52c.05.16.12.29.22.4.1.11.22.19.37.25.15.06.32.1.52.12z" />
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>Python</title>
+                                    <path fill="#3776AB"
+                                        d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z" />
                                 </svg>
                             </div>
                             Python
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M22.028 16.598a.959.959 0 0 1-.572-.258c-.52-.455-1.04-.925-1.558-1.38-.11-.097-.101-.225 0-.325l.805-.718c.287-.25.578-.507.828-.802.167-.197.306-.41.407-.655.123-.292.175-.595.124-.908-.073-.427-.272-.795-.572-1.107-.152-.164-.326-.307-.514-.429-.408-.266-.867-.404-1.346-.484-.525-.09-1.056-.135-1.583-.191a202.972 202.972 0 0 1-10.224-1.34 9.006 9.006 0 0 0-2.348-.112l-1.01.111a.488.488 0 0 1-.295-.03.542.542 0 0 1-.186-.145c-.244-.245-.443-.538-.619-.844-.132-.23-.245-.473-.323-.728a.487.487 0 0 1 .491-.645c1.455.08 2.871-.161 4.254-.572 1.341-.4 2.628-.946 3.864-1.603.204-.108.411-.21.614-.321a11.17 11.17 0 0 0 3.09-2.457c1.196-1.383-.34-2.5-1.879-1.42l-.21.144a17.02 17.02 0 0 1-4.706 2.37A17.915 17.915 0 0 1 4.86 2.45c-.66.082-1.332.122-2.025.132-.236.004-.37.135-.382.355a29.418 29.418 0 0 0 .195 5.597c.2 1.5.545 2.969 1.096 4.383l.033.09a25.8 25.8 0 0 0 3.032 5.568c1.378 1.954 3.003 3.655 4.908 5.068.749.559 1.547 1.053 2.384 1.488.083.042.164.088.246.126.398.196.792.215 1.189.02.433-.213.784-.536 1.002-.977.108-.22.18-.456.23-.695.053-.254.085-.514.102-.77.016-.271.011-.539-.033-.803a6.834 6.834 0 0 0-1.897-3.69l-.171-.173a1.706 1.706 0 0 1-.41-.75c-.092-.35-.045-.694.135-1.02a.853.853 0 0 1 1.036-.453 6.946 6.946 0 0 1 2.502 1.45 6.096 6.096 0 0 1 1.761 2.392c.31.79.467 1.625.5 2.463.024.58-.027 1.156-.168 1.722-.128.528-.358 1.026-.649 1.49-.404.646-.948 1.166-1.583 1.58a10.887 10.887 0 0 1-2.924 1.34c-1.342.42-2.716.59-4.148.455h-.357A18.818 18.818 0 0 1 5.92 21.03 23.957 23.957 0 0 1 1.15 16.03c-1.29-2.023-2.083-4.22-2.316-6.61-.1-1.002-.128-2.015-.078-3.031.077-1.579.351-3.125.807-4.634A19.516 19.516 0 0 1 1.62.133a.14.14 0 0 1 .158-.052 13.9 13.9 0 0 1 2.87.892 20.378 20.378 0 0 1 4.706 2.528 17.587 17.587 0 0 0 6.069 2.923c.895.228 1.83.336 2.76.28.318-.016.635-.038.951-.073.43-.05.787-.25 1.044-.614a1.082 1.082 0 0 0 .193-.9.96.96 0 0 0-.41-.62c-.672-.432-1.36-.838-2.046-1.246l-.506-.3A3.665 3.665 0 0 1 18.52 3c1.071 1.258 2.055 2.585 3.102 3.864v.05c-.097.098-.2.193-.298.293a61.185 61.185 0 0 1-1.896 1.777c-.506.452-.516.48-.13 1.045.163.24.406.315.688.358.314.048.636.064.954.088a20.088 20.088 0 0 1 2.067.245c.42.083.71.296.877.632.183.376.16.745-.074 1.107-.152.238-.34.444-.52.651l-1.26 1.488" />
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>PostgreSQL</title>
+                                    <path fill="#4169E1"
+                                        d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698zM2.371 11.8765c-.7435-2.4358-1.1779-4.8851-1.2123-5.5719-.1086-2.1714.4171-3.6829 1.5623-4.4927 1.8367-1.2986 4.8398-.5408 6.108-.13-.0032.0032-.0066.0061-.0098.0094-2.0238 2.044-1.9758 5.536-1.9708 5.7495-.0002.0823.0066.1989.0162.3593.0348.5873.0996 1.6804-.0735 2.9184-.1609 1.1504.1937 2.2764.9728 3.0892.0806.0841.1648.1631.2518.2374-.3468.3714-1.1004 1.1926-1.9025 2.1576-.5677.6825-.9597.5517-1.0886.5087-.3919-.1307-.813-.5871-1.2381-1.3223-.4796-.839-.9635-2.0317-1.4155-3.5126zm6.0072 5.0871c-.1711-.0428-.3271-.1132-.4322-.1772.0889-.0394.2374-.0902.4833-.1409 1.2833-.2641 1.4815-.4506 1.9143-1.0002.0992-.126.2116-.2687.3673-.4426a.3549.3549 0 0 0 .0737-.1298c.1708-.1513.2724-.1099.4369-.0417.156.0646.3078.26.3695.4752.0291.1016.0619.2945-.0452.4444-.9043 1.2658-2.2216 1.2494-3.1676 1.0128zm2.094-3.988-.0525.141c-.133.3566-.2567.6881-.3334 1.003-.6674-.0021-1.3168-.2872-1.8105-.8024-.6279-.6551-.9131-1.5664-.7825-2.5004.1828-1.3079.1153-2.4468.079-3.0586-.005-.0857-.0095-.1607-.0122-.2199.2957-.2621 1.6659-.9962 2.6429-.7724.4459.1022.7176.4057.8305.928.5846 2.7038.0774 3.8307-.3302 4.7363-.084.1866-.1633.3629-.2311.5454zm7.3637 4.5725c-.0169.1768-.0358.376-.0618.5959l-.146.4383a.3547.3547 0 0 0-.0182.1077c-.0059.4747-.054.6489-.115.8693-.0634.2292-.1353.4891-.1794 1.0575-.11 1.4143-.8782 2.2267-2.4172 2.5565-1.5155.3251-1.7843-.4968-2.0212-1.2217a6.5824 6.5824 0 0 0-.0769-.2266c-.2154-.5858-.1911-1.4119-.1574-2.5551.0165-.5612-.0249-1.9013-.3302-2.6462.0044-.2932.0106-.5909.019-.8918a.3529.3529 0 0 0-.0153-.1126 1.4927 1.4927 0 0 0-.0439-.208c-.1226-.4283-.4213-.7866-.7797-.9351-.1424-.059-.4038-.1672-.7178-.0869.067-.276.1831-.5875.309-.9249l.0529-.142c.0595-.16.134-.3257.213-.5012.4265-.9476 1.0106-2.2453.3766-5.1772-.2374-1.0981-1.0304-1.6343-2.2324-1.5098-.7207.0746-1.3799.3654-1.7088.5321a5.6716 5.6716 0 0 0-.1958.1041c.0918-1.1064.4386-3.1741 1.7357-4.4823a4.0306 4.0306 0 0 1 .3033-.276.3532.3532 0 0 0 .1447-.0644c.7524-.5706 1.6945-.8506 2.802-.8325.4091.0067.8017.0339 1.1742.081 1.939.3544 3.2439 1.4468 4.0359 2.3827.8143.9623 1.2552 1.9315 1.4312 2.4543-1.3232-.1346-2.2234.1268-2.6797.779-.9926 1.4189.543 4.1729 1.2811 5.4964.1353.2426.2522.4522.2889.5413.2403.5825.5515.9713.7787 1.2552.0696.087.1372.1714.1885.245-.4008.1155-1.1208.3825-1.0552 1.717-.0123.1563-.0423.4469-.0834.8148-.0461.2077-.0702.4603-.0994.7662zm.8905-1.6211c-.0405-.8316.2691-.9185.5967-1.0105a2.8566 2.8566 0 0 0 .135-.0406 1.202 1.202 0 0 0 .1342.103c.5703.3765 1.5823.4213 3.0068.1344-.2016.1769-.5189.3994-.9533.6011-.4098.1903-1.0957.333-1.7473.3636-.7197.0336-1.0859-.0807-1.1721-.151zm.5695-9.2712c-.0059.3508-.0542.6692-.1054 1.0017-.055.3576-.112.7274-.1264 1.1762-.0142.4368.0404.8909.0932 1.3301.1066.887.216 1.8003-.2075 2.7014a3.5272 3.5272 0 0 1-.1876-.3856c-.0527-.1276-.1669-.3326-.3251-.6162-.6156-1.1041-2.0574-3.6896-1.3193-4.7446.3795-.5427 1.3408-.5661 2.1781-.463zm.2284 7.0137a12.3762 12.3762 0 0 0-.0853-.1074l-.0355-.0444c.7262-1.1995.5842-2.3862.4578-3.4385-.0519-.4318-.1009-.8396-.0885-1.2226.0129-.4061.0666-.7543.1185-1.0911.0639-.415.1288-.8443.1109-1.3505.0134-.0531.0188-.1158.0118-.1902-.0457-.4855-.5999-1.938-1.7294-3.253-.6076-.7073-1.4896-1.4972-2.6889-2.0395.5251-.1066 1.2328-.2035 2.0244-.1859 2.0515.0456 3.6746.8135 4.8242 2.2824a.908.908 0 0 1 .0667.1002c.7231 1.3556-.2762 6.2751-2.9867 10.5405zm-8.8166-6.1162c-.025.1794-.3089.4225-.6211.4225a.5821.5821 0 0 1-.0809-.0056c-.1873-.026-.3765-.144-.5059-.3156-.0458-.0605-.1203-.178-.1055-.2844.0055-.0401.0261-.0985.0925-.1488.1182-.0894.3518-.1226.6096-.0867.3163.0441.6426.1938.6113.4186zm7.9305-.4114c.0111.0792-.049.201-.1531.3102-.0683.0717-.212.1961-.4079.2232a.5456.5456 0 0 1-.075.0052c-.2935 0-.5414-.2344-.5607-.3717-.024-.1765.2641-.3106.5611-.352.297-.0414.6111.0088.6356.1851z" />
                                 </svg>
                             </div>
                             PostgreSQL
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path
-                                        d="M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 003.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z" />
+                                        d="M12 3c2.9 3.2 4.3 6.2 4.3 9.2 0 3.2-1.6 5.9-4.3 8.8-2.7-2.9-4.3-5.6-4.3-8.8 0-3 1.4-6 4.3-9.2Z"
+                                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                                    <path d="M12 6v12" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" />
+                                    <path d="M12 12c-1.3-1.3-2.2-2.6-2.8-4.2" fill="none" stroke="currentColor"
+                                        stroke-width="1.4" stroke-linecap="round" />
                                 </svg>
                             </div>
                             MongoDB
@@ -2054,9 +2299,10 @@
                         </div>
                         <div class="skill-item">
                             <div class="skill-logo">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M11.536 10.435V5.514L15.823 8v4.92zm-.898 5.753l-4.286-2.484V8.756l4.286 2.484zm8.591-6.425L15.342 7.51l3.887-2.618v.57l1.082-.625v.746l3.208-1.87v4.542l-3.21 1.87v.725l-.337-.194v-.778zm-3.887 2.247v4.619L11.056 19.3v-4.921zm4.969 3.016v-4.54l-3.21 1.868v-.764l-1.081.625v-.55l-3.887 2.617 3.887 2.245 4.29-2.518m-9.673 3.96l-4.287-2.483-4.286 2.46L11.536 24V19.08l-4.286-2.46v1.984l-3.205-1.875v-.724h.01l.337.195v.777l2.858 1.67V13.88m-6.42-.424l4.286-2.484V6.16L3.903 8.647zm-.317-1.129l1.081-.625v.55L1.081 9.074l-1.065-.605V3.883l3.204 1.876V6.47l.34-.188V5.003L.71 3.32v4.61zm4.603-5.22L6.166 3.19l4.288 2.485LV10.6l-4.288-2.486zm4.288-3.153L7.71 1.61v-.57l-1.082.626v-.748l-3.204-1.87v4.615l3.204-1.876v-.7l.327.182v.8zm2.81 2.502L11.056 0v4.92l4.286 2.48z" />
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <title>Amazon AWS</title>
+                                    <path fill="#FF9900"
+                                        d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.183 0 .08-.048.16-.152.24l-.503.335a.383.383 0 0 1-.208.072c-.08 0-.16-.04-.239-.112a2.47 2.47 0 0 1-.287-.375 6.18 6.18 0 0 1-.248-.471c-.622.734-1.405 1.101-2.347 1.101-.67 0-1.205-.191-1.596-.574-.391-.384-.59-.894-.59-1.533 0-.678.239-1.23.726-1.644.487-.415 1.133-.623 1.955-.623.272 0 .551.024.846.064.296.04.6.104.918.176v-.583c0-.607-.127-1.03-.375-1.277-.255-.248-.686-.367-1.3-.367-.28 0-.568.031-.863.103-.295.072-.583.16-.862.272a2.287 2.287 0 0 1-.28.104.488.488 0 0 1-.127.023c-.112 0-.168-.08-.168-.247v-.391c0-.128.016-.224.056-.28a.597.597 0 0 1 .224-.167c.279-.144.614-.264 1.005-.36a4.84 4.84 0 0 1 1.246-.151c.95 0 1.644.216 2.091.647.439.43.662 1.085.662 1.963v2.586zm-3.24 1.214c.263 0 .534-.048.822-.144.287-.096.543-.271.758-.51.128-.152.224-.32.272-.512.047-.191.08-.423.08-.694v-.335a6.66 6.66 0 0 0-.735-.136 6.02 6.02 0 0 0-.75-.048c-.535 0-.926.104-1.19.32-.263.215-.39.518-.39.917 0 .375.095.655.295.846.191.2.47.296.838.296zm6.41.862c-.144 0-.24-.024-.304-.08-.064-.048-.12-.16-.168-.311L7.586 5.55a1.398 1.398 0 0 1-.072-.32c0-.128.064-.2.191-.2h.783c.151 0 .255.025.31.08.065.048.113.16.16.312l1.342 5.284 1.245-5.284c.04-.16.088-.264.151-.312a.549.549 0 0 1 .32-.08h.638c.152 0 .256.025.32.08.063.048.12.16.151.312l1.261 5.348 1.381-5.348c.048-.16.104-.264.16-.312a.52.52 0 0 1 .311-.08h.743c.127 0 .2.065.2.2 0 .04-.009.08-.017.128a1.137 1.137 0 0 1-.056.2l-1.923 6.17c-.048.16-.104.263-.168.311a.51.51 0 0 1-.303.08h-.687c-.151 0-.255-.024-.32-.08-.063-.056-.119-.16-.15-.32l-1.238-5.148-1.23 5.14c-.04.16-.087.264-.15.32-.065.056-.177.08-.32.08zm10.256.215c-.415 0-.83-.048-1.229-.143-.399-.096-.71-.2-.918-.32-.128-.071-.215-.151-.247-.223a.563.563 0 0 1-.048-.224v-.407c0-.167.064-.247.183-.247.048 0 .096.008.144.024.048.016.12.048.2.08.271.12.566.215.878.279.319.064.63.096.95.096.502 0 .894-.088 1.165-.264a.86.86 0 0 0 .415-.758.777.777 0 0 0-.215-.559c-.144-.151-.416-.287-.807-.415l-1.157-.36c-.583-.183-1.014-.454-1.277-.813a1.902 1.902 0 0 1-.4-1.158c0-.335.073-.63.216-.886.144-.255.335-.479.575-.654.24-.184.51-.32.83-.415.32-.096.655-.136 1.006-.136.175 0 .359.008.535.032.183.024.35.056.518.088.16.04.312.08.455.127.144.048.256.096.336.144a.69.69 0 0 1 .24.2.43.43 0 0 1 .071.263v.375c0 .168-.064.256-.184.256a.83.83 0 0 1-.303-.096 3.652 3.652 0 0 0-1.532-.311c-.455 0-.815.071-1.062.223-.248.152-.375.383-.375.71 0 .224.08.416.24.567.159.152.454.304.877.44l1.134.358c.574.184.99.44 1.237.767.247.327.367.702.367 1.117 0 .343-.072.655-.207.926-.144.272-.336.511-.583.703-.248.2-.543.343-.886.447-.36.111-.734.167-1.142.167zM21.698 16.207c-2.626 1.94-6.442 2.969-9.722 2.969-4.598 0-8.74-1.7-11.87-4.526-.247-.223-.024-.527.272-.351 3.384 1.963 7.559 3.153 11.877 3.153 2.914 0 6.114-.607 9.06-1.852.439-.2.814.287.383.607zM22.792 14.961c-.336-.43-2.22-.207-3.074-.103-.255.032-.295-.192-.063-.36 1.5-1.053 3.967-.75 4.254-.399.287.36-.08 2.826-1.485 4.007-.215.184-.423.088-.327-.151.32-.79 1.03-2.57.695-2.994z" />
                                 </svg>
                             </div>
                             AWS
@@ -2073,7 +2319,6 @@
                 </div>
             </div>
         </section>
-
         <section id="contact">
             <div class="section-label">
                 <span>Let's Connect</span>
@@ -2081,34 +2326,32 @@
 
             <h2>Let's build something together</h2>
 
-            <div
-                style="display: grid; gap: 12px; max-width: 480px; font-family: 'Geist Mono', monospace; font-size: 13px; margin-top: 8px;">
-                <a href="mailto:youremail@example.com"
-   class="contact-link"
-   style="color: var(--text-primary);
-          text-decoration: none;
-          padding: 20px 24px;
-          background: var(--surface);
-          border: 1.5px solid var(--border);
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-weight: 500;
-          letter-spacing: 0.2px;">
-    <span style="opacity: 0.5;">→</span>
-    <span>alihusain.or@gmail.com</span>
-</a>
-                <a href="https://twitter.com/yourusername" class="contact-link"
-                    style="color: var(--text-primary); text-decoration: none; padding: 20px 24px; background: var(--surface); border: 1.5px solid var(--border); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 12px; font-weight: 500; letter-spacing: 0.2px;">
-                    <span style="opacity: 0.5;">→</span> x.com/alivldm
+            <div class="connect-panel">
+                <label class="connect-label" for="connectEmail">Email</label>
+                <div class="connect-row">
+                    <input id="connectEmail" class="connect-email-input" type="email" name="email"
+                        placeholder="you@example.com" autocomplete="email">
+                    <a id="connectEmailBtn" href="mailto:alihusain.or@gmail.com?subject=Let%27s%20Connect"
+                        class="connect-btn">
+                        Connect
+                    </a>
+                </div>
+            </div>
+            <div class="connect-secondary">
+                <a href="https://x.com/alivldm" class="x-connect-btn" target="_blank" rel="noopener noreferrer">
+                    <svg class="x-connect-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span>Let's Connect</span>
                 </a>
             </div>
         </section>
 
         <footer>
             <div>
-                <p>© 2024 All rights reserved</p>
+                <p>&copy; 2024 All rights reserved</p>
             </div>
             <div class="footer-links">
                 <a href="#work">Work</a>
@@ -2195,6 +2438,67 @@
             const themeToggle = document.getElementById('themeToggle');
             const html = document.documentElement;
 
+            // Contact email connect button
+            const connectEmailInput = document.getElementById('connectEmail');
+            const connectEmailBtn = document.getElementById('connectEmailBtn');
+
+            if (connectEmailInput && connectEmailBtn) {
+                const ownerEmail = 'alihusain.or@gmail.com';
+                const subject = "Let's Connect";
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                const buildMailtoHref = (senderEmail) => {
+                    const bodyLines = [
+                        'Hi Ali,',
+                        '',
+                        "I'd like to connect regarding your work.",
+                        senderEmail ? `My email: ${senderEmail}` : '',
+                        '',
+                        'Sent from your portfolio contact section.'
+                    ].filter(Boolean);
+
+                    return `mailto:${ownerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+                };
+
+                const syncConnectLink = () => {
+                    const senderEmail = connectEmailInput.value.trim();
+                    if (!senderEmail) {
+                        connectEmailInput.setCustomValidity('');
+                        connectEmailBtn.setAttribute('href', buildMailtoHref(''));
+                        return true;
+                    }
+
+                    const isValidEmail = emailPattern.test(senderEmail);
+                    connectEmailInput.setCustomValidity(isValidEmail ? '' : 'Enter a valid email address.');
+
+                    if (isValidEmail) {
+                        connectEmailBtn.setAttribute('href', buildMailtoHref(senderEmail));
+                    }
+
+                    return isValidEmail;
+                };
+
+                syncConnectLink();
+
+                connectEmailInput.addEventListener('input', syncConnectLink);
+
+                connectEmailInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        connectEmailBtn.click();
+                    }
+                });
+
+                connectEmailBtn.addEventListener('click', (event) => {
+                    const isValid = syncConnectLink();
+                    if (!isValid) {
+                        event.preventDefault();
+                        connectEmailInput.reportValidity();
+                        connectEmailInput.focus();
+                    }
+                });
+            }
+
             // Check for saved theme preference or default to light mode
             const savedTheme = localStorage.getItem('theme') || 'light';
             html.setAttribute('data-theme', savedTheme);
@@ -2245,39 +2549,6 @@
                         });
                     }
                 });
-            });
-
-            // Enhanced hover effect for contact links
-            document.querySelectorAll('.contact-link').forEach(link => {
-                link.addEventListener('mouseenter', function () {
-                    this.style.borderColor = 'var(--accent)';
-                    this.style.background = 'var(--surface-elevated)';
-                    this.style.transform = 'translateX(8px)';
-                    this.style.boxShadow = 'var(--shadow-sm)';
-                    const arrow = this.querySelector('span');
-                    if (arrow) {
-                        arrow.style.opacity = '1';
-                        arrow.style.transform = 'translateX(4px)';
-                    }
-                });
-                link.addEventListener('mouseleave', function () {
-                    this.style.borderColor = 'var(--border)';
-                    this.style.background = 'var(--surface)';
-                    this.style.transform = 'translateX(0)';
-                    this.style.boxShadow = 'none';
-                    const arrow = this.querySelector('span');
-                    if (arrow) {
-                        arrow.style.opacity = '0.5';
-                        arrow.style.transform = 'translateX(0)';
-                    }
-                });
-
-                // Add transition to arrows
-                const arrow = link.querySelector('span');
-                if (arrow) {
-                    arrow.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-                    arrow.style.display = 'inline-block';
-                }
             });
 
             // Parallax effect on scroll for notepad background
