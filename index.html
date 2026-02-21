@@ -1403,13 +1403,37 @@
             color: var(--text-tertiary);
         }
 
-        .connect-row {
+        .connect-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .form-row {
             display: flex;
             gap: 12px;
             align-items: stretch;
         }
 
-        .connect-email-input {
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .connect-input {
             width: 100%;
             min-width: 0;
             padding: 14px 16px;
@@ -1422,25 +1446,25 @@
             transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             outline: none;
+            resize: vertical;
         }
 
-        .connect-email-input:focus {
+        .connect-input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
         }
 
-        [data-theme="dark"] .connect-email-input:focus {
+        [data-theme="dark"] .connect-input:focus {
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
         }
 
-        .connect-btn,
-        .x-connect-btn {
+        .connect-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 0 18px;
             border-radius: 12px;
-            border: 1.5px solid var(--border);
+            border: 1.5px solid var(--accent);
             text-decoration: none;
             white-space: nowrap;
             font-family: 'Geist Mono', monospace;
@@ -1451,12 +1475,9 @@
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .connect-btn {
+                color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             background: var(--accent);
-            border-color: var(--accent);
             color: var(--bg);
         }
 
@@ -1466,50 +1487,169 @@
         }
 
         .x-connect-btn {
-            background: #000000;
-            border-color: #000000;
-            color: #ffffff;
-            width: fit-content;
-            gap: 8px;
-            padding: 16px 24px;
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+            padding: 16px 24px;
+            width: 100%;
             height: 100%;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1;
+            box-shadow: var(--shadow-sm);
         }
 
-        [data-theme="dark"] .x-connect-btn {
-            background: #ffffff;
-            border-color: #ffffff;
-            color: #000000;
+        .x-connect-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(82, 39, 255, 0.05) 0%, rgba(255, 159, 252, 0.05) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
         }
 
-        .x-connect-icon {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
+        [data-theme="dark"] .x-connect-bg {
+            background: linear-gradient(135deg, rgba(82, 39, 255, 0.1) 0%, rgba(255, 159, 252, 0.1) 50%, transparent 100%);
+        }
+
+        .x-connect-glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            top: -75px;
+            left: -75px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        [data-theme="dark"] .x-connect-glow {
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        }
+
+        .x-connect-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-sm);
             flex-shrink: 0;
-            display: block;
+        }
+
+        .x-connect-icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .x-connect-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .x-title {
+            color: var(--text-primary);
+            font-family: 'Geist', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .x-subtitle {
+            color: var(--text-tertiary);
+            font-family: 'Geist Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
         }
 
         .x-connect-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(0.95);
+            transform: translateY(-4px);
+            border-color: rgba(120, 120, 120, 0.3);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        [data-theme="dark"] .x-connect-btn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .x-connect-btn:hover .x-connect-bg {
+            opacity: 1;
+        }
+
+        .x-connect-btn:hover .x-connect-glow {
+            opacity: 1;
+            animation: moveGlow 3s linear infinite;
+        }
+
+        .x-connect-btn:hover .x-connect-icon-wrapper {
+            background: #000;
+            border-color: #000;
+            color: #fff;
+            transform: scale(1.05) rotate(-5deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] .x-connect-btn:hover .x-connect-icon-wrapper {
+            background: #fff;
+            border-color: #fff;
+            color: #000;
+            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+        }
+
+        .x-connect-btn:hover .x-connect-icon-wrapper svg {
+            transform: scale(1.1);
+        }
+
+        .x-connect-btn:hover .x-title {
+            color: var(--text-primary);
+        }
+
+        .x-connect-btn:hover .x-subtitle {
+            color: var(--text-secondary);
+        }
+
+        @keyframes moveGlow {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(80px, 80px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
         }
 
         .contact-methods {
             display: flex;
-            flex-direction: column;
-            ;
+            flex-direction: row;
             gap: 16px;
-            align-items: stretch;
+            align-items: flex-start;
             margin-top: 32px;
-        }
-
-        .connect-secondary {
-            display: flex;
-            flex-direction: column;
-            margin-top: 0;
         }
 
         /* Footer */
@@ -1524,7 +1664,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: wrap-reverse;
             gap: 32px;
             letter-spacing: 0.3px;
         }
@@ -1882,7 +2022,7 @@
                 gap: 10px;
             }
 
-            .connect-row {
+            .form-row {
                 flex-direction: column;
             }
 
@@ -2113,7 +2253,7 @@
                     I build web apps that actually slap.
                     Specialized in the React ecosystem, I handle the entire pipeline. From complex backend logic to
                     hyper-clean, intuitive Ul.
-                    When I'm not helping clients secure absolute Ws on their projects, I'm busy cooking up my own.</p>
+                    When I'm not helping clients secure absolute Wins on their projects, I'm busy cooking up my own.</p>
             </div>
         </header>
 
@@ -2125,8 +2265,7 @@
             </div>
 
             <div class="projects-grid">
-                <a class="project-card project-card--wip" target="_blank"
-                    rel="noopener noreferrer">
+                <a class="project-card project-card--wip" target="_blank" rel="noopener noreferrer">
                     <img src="crossbits.png" alt="Crossbits preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">Cross Bits</h3>
@@ -2146,8 +2285,7 @@
                     </div>
                 </a>
 
-                <a class="project-card project-card--wip" target="_blank"
-                    rel="noopener noreferrer">
+                <a class="project-card project-card--wip" target="_blank" rel="noopener noreferrer">
                     <img src="deadroute.png" alt="SaaS Dashboard preview" class="project-preview">
                     <div class="project-header">
                         <h3 class="project-title">Dead Route</h3>
@@ -2394,37 +2532,58 @@
 
             <div class="contact-methods">
                 <div class="connect-panel">
-                    <label class="connect-label" for="connectEmail">Email</label>
-                    <form class="connect-row" action="https://formsubmit.co/alihusain.or@gmail.com" method="POST">
+                    <label class="connect-label" for="connectEmail">Send a Message</label>
+                    <form class="connect-form" action="https://formsubmit.co/alihusain.or@gmail.com" method="POST">
                         <input type="hidden" name="_subject" value="New connection from Portfolio">
-                        <input id="connectEmail" class="connect-email-input" type="email" name="email"
-                            placeholder="you@example.com" autocomplete="email" required>
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name" class="sr-only">Name</label>
+                                <input id="name" class="connect-input" type="text" name="name" placeholder="Name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="sr-only">Email</label>
+                                <input id="email" class="connect-input" type="email" name="email" placeholder="Email"
+                                    autocomplete="email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="sr-only">Message</label>
+                            <textarea id="message" class="connect-input" name="message" placeholder="Your message..."
+                                rows="4" required></textarea>
+                        </div>
                         <button type="submit" id="connectEmailBtn" class="connect-btn">
-                            Connect
+                            Send Message
                         </button>
-                    </form>
-                </div>
-                <div class="connect-secondary">
-                    <a href="https://x.com/alivldm" class="x-connect-btn" target="_blank" rel="noopener noreferrer">
-                        <svg class="x-connect-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
-                            <path
-                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                        <span>Let's Connect</span>
-                    </a>
                 </div>
             </div>
         </section>
 
         <footer>
             <div>
-                <p>&copy; 2024 All rights reserved</p>
+                <p>&copy; 2026 Made By Ali</p>
+                <div class="footer-links" style="margin-top: 16px;">
+                    <a href="#work">Work</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#contact">Contact</a>
+                </div>
             </div>
-            <div class="footer-links">
-                <a href="#work">Work</a>
-                <a href="#skills">Skills</a>
-                <a href="#contact">Contact</a>
+            <div style="width: 280px;">
+                <a href="https://x.com/alivldm" class="x-connect-btn" target="_blank" rel="noopener noreferrer">
+                    <div class="x-connect-bg"></div>
+                    <div class="x-connect-glow"></div>
+                    <div class="x-connect-icon-wrapper">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </div>
+                    <div class="x-connect-text">
+                        <span class="x-title">Follow on X</span>
+                        <span class="x-subtitle">Stay Connected</span>
+                    </div>
+                </a>
             </div>
         </footer>
     </div>
