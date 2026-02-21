@@ -1667,6 +1667,10 @@
             letter-spacing: 0.3px;
         }
 
+        .footer-connect {
+            width: 280px;
+        }
+
         .footer-links {
             display: flex;
             gap: 32px;
@@ -2047,6 +2051,10 @@
             footer {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .footer-connect {
+                width: 100%;
             }
 
             section {
@@ -2567,7 +2575,7 @@
                     <a href="#contact">Contact</a>
                 </div>
             </div>
-            <div style="width: 280px;">
+            <div class="footer-connect">
                 <a href="https://x.com/alivldm" class="x-connect-btn" target="_blank" rel="noopener noreferrer">
                     <div class="x-connect-bg"></div>
                     <div class="x-connect-glow"></div>
@@ -2602,8 +2610,7 @@
                     d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
         </a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"
-            onclick="(function(){ var h=document.documentElement; var t=h.getAttribute('data-theme')==='light'?'dark':'light'; h.setAttribute('data-theme',t); localStorage.setItem('theme',t); })()">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <svg class="sun-icon" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="5"></circle>
                 <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -2622,6 +2629,22 @@
     </nav>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Theme Toggle
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (themeToggleBtn) {
+                const toggleTheme = (e) => {
+                    e.preventDefault();
+                    const html = document.documentElement;
+                    const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                    html.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                };
+
+                // Use both click and touchstart for better mobile responsiveness
+                themeToggleBtn.addEventListener('click', toggleTheme);
+                themeToggleBtn.addEventListener('touchstart', toggleTheme, { passive: false });
+            }
+
             // Prismatic Burst Generation
             const prismaticBurst = document.getElementById('prismaticBurst');
             const colors = ['#5227FF', '#FF9FFC', '#7cff67'];
