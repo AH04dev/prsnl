@@ -2635,6 +2635,35 @@
         </button>
     </nav>
     <script>
+        
+          const navbar = document.querySelector("nav");
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const navHeight = navbar.offsetHeight;
+
+        if (currentScrollY > lastScrollY) {
+          // Scroll DOWN → hide (move DOWN)
+          navbar.style.transform = "translateX(-50%) translateY(120%)";
+          navbar.style.opacity = "0";
+        } else {
+          // Scroll UP → show
+          navbar.style.transform = "translateX(-50%) translateY(0)";
+          navbar.style.opacity = "1";
+        }
+
+        lastScrollY = currentScrollY;
+        ticking = false;
+      });
+
+      ticking = true;
+    }
+  });
+        
         document.addEventListener('DOMContentLoaded', function () {
             // Theme Toggle
             const themeToggleBtn = document.getElementById('themeToggle');
